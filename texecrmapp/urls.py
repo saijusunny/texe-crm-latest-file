@@ -40,7 +40,9 @@ urlpatterns = [
     path('icons',views.icons, name='icons'),
     ########################################################################USER MODULE
     path('user_dashboard',views.user_dashboard, name='user_dashboard'),
-    
+    path('complaint_servicess',views.complaint_servicess, name='complaint_servicess'),
+    path('order_user_view',views.order_user_view, name='order_user_view'),
+    path('cancel_order/<int:id>',views.cancel_order, name='cancel_order'),
     ######################################################################################
     path('logout',views.logout, name='logout'),
 

@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'texecrm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'crm3_crm1',
+        'NAME': 'crm3_crm2',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',

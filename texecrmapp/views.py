@@ -48,6 +48,10 @@ def login(request):
                     member = users.objects.get(email=username, password=password)
                     request.session['userid'] = member.id
                     return redirect('staff_index')
+            elif users.objects.filter(email=username, password=password,role="user").exists():
+                member = users.objects.get(email=username, password=password)
+                request.session['userid'] = member.id
+                return redirect('user_dashboard')
             elif user.is_superuser:
                 request.session['userid'] = request.user.id
                 return redirect('dashboard')
@@ -280,6 +284,7 @@ def add_complaint(request):
         com_srv.complaint=request.POST.get('complaint')
         com_srv.type="complaint"
         com_srv.status="pending"
+        com_srv.date_register=date.today()
         com_srv.save()
         current_site = get_current_site(request)
         mail_subject = "Texe Complaint Registred"
@@ -355,7 +360,9 @@ def add_service(request):
         com_srv.complaint=request.POST.get('complaint')
         com_srv.type="service"
         com_srv.status="pending"
+        com_srv.date_register=date.today()
         com_srv.save()
+
         current_site = get_current_site(request)
         mail_subject = "Texe Complaint Registred"
         message = f"Hai {usrid.name},\n\nUser name : {usrid.email}\nPassword : {usrid.password}\nClick the link {current_site} to view your given service status"
@@ -564,7 +571,6 @@ def add_user_order(request,id):
 
 def save_cart(request,id):
     
-    print("sdfhgjhasgdush  ")
     if request.method=="POST":
         ids=request.POST.get('name',None)
         usr=users.objects.get(id=ids)
@@ -677,6 +683,14 @@ def save_cart(request,id):
         title=str(numb)+" "+str(usr.name) 
         event = events_crm(name=title, start=start,end=start, user=usr, order=chk) 
         event.save()
+
+        current_site = get_current_site(request)
+        mail_subject = "Texe Order Placed"
+        message = f"Hai {usr.name},\n\nUser name : {usr.email}\nPassword : {usr.password}\nClick the link {current_site} to view your given service status"
+
+        to_email = usr.email
+        send_email = EmailMessage(mail_subject,message,to = [to_email])
+        send_email.send()
 
 
 
@@ -795,5 +809,62 @@ def logout(request):
     else:
         return redirect('/')
 
+
+############################################################### USER MODULE
 def user_dashboard(request):
-    return render(request, 'user\dashboard.html')
+    usr=request.session['userid']
+    userss=users.objects.get(id=usr)
+    resolved_func = resolve(request.path_info).func
+    segment=resolved_func.__name__
+
+
+    context={
+        'user':userss,
+        'segment':segment,
+    }
+    return render(request, 'user\dashboard.html',context)
+
+def complaint_servicess(request):
+    usr=request.session['userid']
+    userss=users.objects.get(id=usr)
+
+    resolved_func = resolve(request.path_info).func
+    segment=resolved_func.__name__
+
+    comp=complaint_service.objects.filter(type="complaint", users=userss)
+ 
+    serv=complaint_service.objects.filter(type="service", users=userss)
+
+    context={
+        'user':userss,
+        'segment':segment,
+        'comp':comp,
+        'serv':serv,
+    }
+    return render(request, 'user\comp_serv_user.html',context)
+
+
+def order_user_view(request):
+    usr=request.session['userid']
+    userss=users.objects.get(id=usr)
+
+    resolved_func = resolve(request.path_info).func
+    segment=resolved_func.__name__
+    ords=orders_crm.objects.filter(user=userss)
+    
+    ords_itm=checkout_item_crm.objects.all()
+    context={
+        'user':userss,
+        'segment':segment,
+        'ords':ords,
+
+        'ords_itm':ords_itm,
+       
+    }
+    return render(request, 'user\order_user_view.html',context)
+
+def cancel_order(request,id):
+    ords=orders_crm.objects.get(id=id)
+    ords.status=="cancel"
+    ords.save()
+    return redirect('my_order')

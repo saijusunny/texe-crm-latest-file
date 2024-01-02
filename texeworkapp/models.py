@@ -12,12 +12,3 @@ class form1(models.Model):
 	def __str__(self):
 		return self.first_name
 
-
-class complaint_service(models.Model):
-    
-
-    regno= models.CharField(max_length=255,blank=True,null=True)
-    complaint = models.TextField(blank=True,null=True)
-    status= models.CharField(max_length=255,blank=True,null=True)
-    date_register= models.DateField()
-    type= models.CharField(max_length=255,blank=True,null=True)

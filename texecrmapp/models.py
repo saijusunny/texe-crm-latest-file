@@ -3,8 +3,9 @@ from django.db import models
 from datetime import datetime,date, timedelta
 # clientapp connection
 
-from texeclientapp.models import *
-
+from texeclientapp.models import item
+from texeclientapp.models import sub_images
+from texeclientapp.models import sub_color
 # work app connection 
 
 from texeworkapp.models import *
