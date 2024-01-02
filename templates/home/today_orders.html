@@ -278,7 +278,7 @@
                         <div class="row">
                             <div class="col-sm-12   text-left">
                                 <h5 class="card-category"></h5>
-                                <h2 class="card-title" id="card-title">Orders</h2>
+                                <h2 class="card-title" id="card-title">Pending Orders</h2>
                             </div>
                         </div>
                         
@@ -290,7 +290,6 @@
                             <div class="col-sm-12 mb-5" style="" id="flt_div">
                               <a href="" data-toggle="modal" data-target="#flt_id" style="text-decoration: none;"><button class="btn btn-primary pl-4 pr-4 pb-2 pt-2" id="">Filter By OrderID</button></a>
                         
-                              <a href="" data-toggle="modal" data-target="#flt_date" style="text-decoration: none;"><button class="btn btn-primary  pb-2 pt-2" id="filter">Filter by Date</button></a>
                             </div>
                           </div>
                           {% if orders%}
@@ -420,15 +419,17 @@
                           {%endfor%}
                           {%else%}
                           <div class="row">
-                              <div class="col-sm-8 bg-dark p-5" style="text-align: center;margin: auto;">
-                                  
-                                  <div class="alert alert-danger">
-                                    <ul>
-                                      
-                                            <li style="font-size: 16px;">No Orders Found!</li>
-                                       
-                                    </ul>
-                                </div>
+                              <div class="col-sm-8  p-5" style="text-align: center;margin: auto;">
+                          
+                                        
+                                        <div class="alert alert-danger">
+                                          <ul>
+                                            
+                                                  <li style="font-size: 16px;">No Orders Found!</li>
+                                             
+                                          </ul>
+                                      </div>
+                                    
                               </div>
                           </div>
                           {%endif%}
@@ -443,55 +444,7 @@
         
     </div>
 
-    <div class="modal fade" id="flt_date" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Filter By Date</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form action="{% url 'filter_order'%}" method="POST" enctype="multipart/form-data">
-              {% csrf_token %} 
-  
-              <div class="row">
-                
-                <div class="col-6 ">
-                    <div>
-                        <label for="">Start Date</label>
-                    </div>
-                    <div>
-                    <input type="date" class="drop form-control  mt-2 text-light" name="str_dt" style="border:1px solid #6C7293 ;height:70px;"  >
-                    </div>
-  
-      
-                </div>
-                <div class="col-6 ">
-                    <div>
-                        <label for=""> End Date</label>
-                    </div>
-                    <div>
-                        <input type="date" name="end_dt" class="drop form-control mt-2 text-light" style="border:1px solid #6C7293 ;height:70px;"  >
-                    </div>
-  
-      
-                </div>
-  
-              </div>
-  
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Find</button>
-          
-
-            </form>
-   
-          </div>
-        </div>
-      </div>
-    </div>
+        
     <div class="modal fade" id="flt_id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

@@ -63,6 +63,71 @@ def login(request):
             messages.error(request, 'Invalid username or password')
     return render(request, 'home/login.html')
 
+
+def forgotPassword(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        if  users.objects.filter(email=email).exists():
+            user =  users.objects.get(email=email)
+
+            current_site = get_current_site(request)
+            mail_subject = "Reset your password"
+            message = render_to_string('forget-password/reset_password_email.html',{
+                'user':user,
+                'domain' :current_site,
+                'user_id' : urlsafe_base64_encode(force_bytes(user.pk)),
+                'token' : default_token_generator.make_token(user),
+            }) 
+
+            to_email = email
+            send_email = EmailMessage(mail_subject,message,to = [to_email])
+            send_email.send()
+
+            messages.success(request,"Password reset email has been sent your email address.")
+            return redirect('login')
+        else:
+            messages.error(request,"This account does not exists !")
+            return redirect('forgotPassword')
+    return render(request,'forget-password/forgotPassword.html')
+
+
+def resetpassword_validate(request,uidb64,token):
+    try:
+        user_id = urlsafe_base64_decode(uidb64).decode()
+        user =  users._default_manager.get(pk=user_id)  
+    except(TypeError,ValueError,OverflowError, registration.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user,token):
+        request.session['user_id'] = user_id 
+        messages.success(request,"Please reset your password.")
+        return redirect('resetPassword')
+    else:
+        messages.error(request,"The link has been expired !")
+        return redirect('login')
+    
+def resetPassword(request):
+    if request.method == 'POST':
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password == confirm_password:
+            uid = request.session.get('user_id') 
+            user =  users.objects.get(pk=uid)
+            user.password = password
+            user.save()
+            messages.success(request,"Password reset successfull.")
+            return redirect('login')
+
+        else:
+            messages.error(request,"Password do not match")
+            return redirect('resetPassword')
+    else:
+        return render(request,'forget-password/resetPassword.html')
+
+
+
+
 def dashboard(request):
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
@@ -538,6 +603,88 @@ def filter_order_id(request):
             'user':user,
         }
         return render(request,'home/orders.html', context)
+
+
+def pending_orders(request):
+    resolved_func = resolve(request.path_info).func
+    segment=resolved_func.__name__
+    user=None
+    orde=orders_crm.objects.filter(stage="pending").order_by("-id")
+    
+    ord_item=checkout_item_crm.objects.all()
+    context={
+            'segment':segment,
+            'user':user,
+            "orders":orde,
+            "ord_item":ord_item,
+        }
+    return render(request, 'home/pending_orders.html', context)
+
+def filter_pending(request):
+    if request.method=="POST":
+        st_dt=request.POST.get('str_dt')
+        en_dt=request.POST.get('end_dt')
+        segment="orders_dta"
+        user=None
+        orde = orders_crm.objects.filter(date__gte=st_dt,date__lte=en_dt,stage="pending")
+        ord_item=checkout_item_crm.objects.all()
+        context={
+            "orders":orde,
+            "ord_item":ord_item,
+            'segment':segment,
+            'user':user,
+        }
+        return render(request,'home/pending_orders.html', context)
+
+
+def filter_pending_id(request):
+    if request.method=="POST":
+        ord_id=request.POST.get('ord_id')
+        orde = orders_crm.objects.filter(regno=ord_id,stage="pending" )
+        ord_item=checkout_item_crm.objects.all()
+        segment="orders_dta"
+        user=None
+        context={
+            "orders":orde,
+            "ord_item":ord_item,
+            'segment':segment,
+            'user':user,
+        }
+        return render(request,'home/pending_orders.html', context)
+
+
+def today_orders(request):
+    resolved_func = resolve(request.path_info).func
+    segment=resolved_func.__name__
+    user=None
+    orde=orders_crm.objects.filter(date=date.today()).order_by("-id")
+    
+    ord_item=checkout_item_crm.objects.all()
+    context={
+            'segment':segment,
+            'user':user,
+            "orders":orde,
+            "ord_item":ord_item,
+        }
+    return render(request, 'home/today_orders.html', context)
+
+
+
+def filter_today_id(request):
+    if request.method=="POST":
+        ord_id=request.POST.get('ord_id')
+        orde = orders_crm.objects.filter(regno=ord_id,stage="pending" )
+        ord_item=checkout_item_crm.objects.all()
+        segment="orders_dta"
+        user=None
+        context={
+            "orders":orde,
+            "ord_item":ord_item,
+            'segment':segment,
+            'user':user,
+        }
+        return render(request,'home/today_orders.html', context)
+
 
 def change_order_status(request):
     ele = request.GET.get('ele')

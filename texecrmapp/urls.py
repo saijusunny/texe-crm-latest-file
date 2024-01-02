@@ -3,6 +3,9 @@ from . import views
 
 urlpatterns = [
     path('',views.login, name='login'),
+    path('forgotPassword/', views.forgotPassword,name='forgotPassword'),
+    path('resetpassword_validate/<uidb64>/<token>/', views.resetpassword_validate,name='resetpassword_validate'),
+    path('resetPassword/', views.resetPassword,name='resetPassword'),
     path('dashboard',views.dashboard, name='dashboard'),
     path('users_lst',views.users_lst, name='users_lst'),
     path('staff_home',views.staff_home, name='staff_home'),
@@ -39,6 +42,11 @@ urlpatterns = [
     path('filter_order_id',views.filter_order_id, name='filter_order_id'),
     path('change_order_status',views.change_order_status, name='change_order_status'),
     path('change_order_stage',views.change_order_stage, name='change_order_stage'),
+    path('pending_orders',views.pending_orders, name='pending_orders'),
+    path('filter_pending',views.filter_pending, name='filter_pending'),
+    path('filter_pending_id',views.filter_pending_id, name='filter_pending_id'),
+    path('today_orders',views.today_orders, name='today_orders'),
+    path('filter_today_id',views.filter_today_id, name='filter_today_id'),
     #########################################################################Staff Module
     path('staff_index',views.staff_index, name='staff_index'),
     path('registrations',views.registrations, name='registrations'),
