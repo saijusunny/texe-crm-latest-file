@@ -81,6 +81,12 @@ def dashboard(request):
         qty=orders.objects.filter(date__day=i).count()
         cnt.append(qty)
 
+    sub2=orders_crm.objects.filter(date__month=today.month).values_list('date__day', flat=True).distinct()
+    for i in sub2:
+        
+        nm.append(i)
+        qty=orders.objects.filter(date__day=i).count()
+        cnt.append(qty)
     
  
     return render(request,'home/index.html',{'segment':segment,"user":user,'sub_cat':sub_cat,'nm':nm,
@@ -490,11 +496,88 @@ def orders_dta(request):
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
     user=None
+    orde=orders_crm.objects.all().order_by("-id")
+    
+    ord_item=checkout_item_crm.objects.all()
     context={
             'segment':segment,
             'user':user,
+            "orders":orde,
+            "ord_item":ord_item,
         }
     return render(request, 'home/orders.html', context)
+
+def filter_order(request):
+    if request.method=="POST":
+        st_dt=request.POST.get('str_dt')
+        en_dt=request.POST.get('end_dt')
+        segment="orders_dta"
+        user=None
+        orde = orders_crm.objects.filter(date__gte=st_dt,date__lte=en_dt)
+        ord_item=checkout_item_crm.objects.all()
+        context={
+            "orders":orde,
+            "ord_item":ord_item,
+            'segment':segment,
+            'user':user,
+        }
+        return render(request,'home/orders.html', context)
+
+
+def filter_order_id(request):
+    if request.method=="POST":
+        ord_id=request.POST.get('ord_id')
+        orde = orders_crm.objects.filter(regno=ord_id)
+        ord_item=checkout_item_crm.objects.all()
+        segment="orders_dta"
+        user=None
+        context={
+            "orders":orde,
+            "ord_item":ord_item,
+            'segment':segment,
+            'user':user,
+        }
+        return render(request,'home/orders.html', context)
+
+def change_order_status(request):
+    ele = request.GET.get('ele')
+    count = request.GET.get('count')
+    itm=orders_crm.objects.get(id=ele)
+
+    itm.stage_count=count
+    if int(count)==6:
+        itm.status='arrived'
+        itm.stage="arrived"
+    else:
+        itm.status='delivery'
+        itm.stage="despatch"
+    itm.save()
+    return JsonResponse({"status":" not"})
+
+
+def change_order_stage(request):
+    ele = request.GET.get('ele')
+    stg = request.GET.get('stage')
+    itm=orders_crm.objects.get(id=ele)
+
+    itm.stage=stg
+    itm.save()
+    return JsonResponse({"status":" not"})
+
+def orders_list(request,id):
+    orde = orders_crm.objects.filter(id=id).order_by("-id")
+    ord_item=checkout_item_crm.objects.filter(orders=id)
+ 
+    segment="orders_dta"
+    user=None
+    context={
+        "orders":orde,
+        "ord_item":ord_item,
+        'segment':segment,
+        'user':user,
+    }
+    return render(request, 'home/orders_list.html', context)
+
 def prouct_list(request):
     segment="orders_dta"
     user=None
@@ -635,7 +718,7 @@ def save_cart(request,id):
 
 
         total_amount = itm.offer_price
-        numb= request.FILES.get('regno',None)
+        numb= request.POST.get('regno',None)
 
         chk=orders_crm()
         chk.user = usr
@@ -643,6 +726,7 @@ def save_cart(request,id):
         chk.date=datetime.now()
         chk.status="checkout"
         chk.regno=numb
+        chk.stage="pending"
         chk.save()
         item_id =id
         qty =request.POST.get('qty',None)
@@ -686,7 +770,7 @@ def save_cart(request,id):
 
         current_site = get_current_site(request)
         mail_subject = "Texe Order Placed"
-        message = f"Hai {usr.name},\n\nUser name : {usr.email}\nPassword : {usr.password}\nClick the link {current_site} to view your given service status"
+        message = f"Hai {usr.name},\n\nUser name : {usr.email}\nPassword : {usr.password}\nOrder Number : {numb}\nClick the link {current_site} to view your order status"
 
         to_email = usr.email
         send_email = EmailMessage(mail_subject,message,to = [to_email])

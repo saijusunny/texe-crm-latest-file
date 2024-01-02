@@ -61,10 +61,11 @@ class cart_crm(models.Model):
 class orders_crm(models.Model):
     regno= models.CharField(max_length=250, null=True, blank=True)
     user = models.ForeignKey(users, on_delete=models.SET_NULL, null=True, blank=True)
-    status =models.CharField(max_length = 255,blank=True,null=True, default=0)
+    status =models.CharField(max_length = 255,blank=True,null=True)
     total_amount=models.FloatField(default=0,null=True, blank=True)
     date=models.DateTimeField(null=True, blank=True)
     stage_count=models.IntegerField(default=0,null=True, blank=True)
+    stage =models.CharField(max_length = 255,blank=True,null=True)
 
 class checkout_item_crm(models.Model):
     orders = models.ForeignKey(orders_crm, on_delete=models.SET_NULL, null=True, blank=True)

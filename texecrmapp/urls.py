@@ -34,6 +34,11 @@ urlpatterns = [
     path('cart_change_meterial',views.cart_change_meterial, name='cart_change_meterial'),
     path('cart_change_model',views.cart_change_model, name='cart_change_model'),
     path('save_cart/<int:id>',views.save_cart, name='save_cart'),
+    path('orders_list/<int:id>',views.orders_list, name='orders_list'),
+    path('filter_order',views.filter_order, name='filter_order'),
+    path('filter_order_id',views.filter_order_id, name='filter_order_id'),
+    path('change_order_status',views.change_order_status, name='change_order_status'),
+    path('change_order_stage',views.change_order_stage, name='change_order_stage'),
     #########################################################################Staff Module
     path('staff_index',views.staff_index, name='staff_index'),
     path('registrations',views.registrations, name='registrations'),

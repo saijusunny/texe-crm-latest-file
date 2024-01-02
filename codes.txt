@@ -1,0 +1,20 @@
+python manage.py makemigrations
+python manage.py migrate --fake texecrmapp  
+python manage.py migrate
+
+python manage.py migrate --database=form1_db
+python manage.py migrate --database=form2_db
+python manage.py runserver
+
+python manage.py migrate texecrmapp 0001_initial
+>python manage.py migrate texecrmapp zero
+
+
+
+######################################################
+
+add clientapp domain
+
+product list, product view, order.html, order_list.html - Admin Module("home")
+
+order_user_view - user module 
