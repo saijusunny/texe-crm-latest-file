@@ -8,7 +8,14 @@
 {% block content %}
 {%load static%}
 <style>
-
+  .in_expect{
+    width: 25%;
+  }
+  @media screen and (max-width: 960px) {  
+    .in_expect{
+    width: 45%;
+  }
+  }
   #footer{
         margin-top: 1rem;
         color: white;
@@ -321,6 +328,12 @@
                                       </div>
                                     </div>
                                   </div>
+                                  <div class="row">
+                                    <div class="col-sm-12 mt-2" style="text-align: right;">
+                                      <label for="" >Delivery Date : &nbsp;&nbsp; </label>
+                                      <input type="date" class="form-control mr-3 mb-2 in_expect" id="in_expect{{forloop.counter}}" style="float: right;" onchange="update_date_crm('{{i.id}}','{{forloop.counter}}')"value="{{i.delivery_date |date:'Y-m-d'}}">
+                                    </div>
+                                  </div>
                                   
                                   <div class="row">
                                     <div class="col-md-12 col-lg-2 col-xl-2 mb-4 mb-lg-0">
@@ -430,6 +443,7 @@
                                 <div class="card-body">
                                   <div class="row">
                                     <div class="col-sm-12">
+                                      
                                       <div class="dropdown" style="position: relative;float: right; top: 0;right: 20px;">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           {{i.stage}}
@@ -446,6 +460,12 @@
                                           <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','arrived')">Arrived</a>
                                         </div>
                                       </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-sm-12 mt-2" style="text-align: right;">
+                                      <label for="" >Delivery Date : &nbsp;&nbsp; </label>
+                                      <input type="date" class="form-control mr-3 mb-2 in_expect" id="in_expect{{forloop.counter}}" style="float: right;" onchange="update_date('{{i.regno}}','{{forloop.counter}}')" value="{{i.delivery_date |date:'Y-m-d'}}">
                                     </div>
                                   </div>
                                   
@@ -489,10 +509,11 @@
                                     </div>
                                     
                                     <div class="col-md-6 col-lg-4 col-xl-4 ">
+                                      
                                       <div class="d-flex flex-row align-items-center mb-1">
-
                                         
-                      
+                                        
+                                        
                                         <div class="row">
                                           <div class="col-sm-12">
                                               
@@ -785,5 +806,37 @@
     
     </script>
 
+<script>
+  function update_date(id,cnt){
+    var date=document.getElementById(`in_expect${cnt}`).value;
+    $.ajax({
+          type: "GET",
+          url: "{% url 'up_expect' %}",
+          data: {
+              ele : id,
+              count:date,
+              
+          },
+          success:function(response){
+            alert("Order Delivery Expected Date Update Successfully")
+          }});
+  }
+</script>
 
+<script>
+  function update_date_crm(id){
+    var date=document.getElementById(`in_expect${cnt}`).value;
+    $.ajax({
+          type: "GET",
+          url: "{% url 'up_expect_crm' %}",
+          data: {
+              ele : id,
+              count:date,
+              
+          },
+          success:function(response){
+                alert("Order Delivery Expected Date Update Successfully")
+          }});
+  }
+</script>
 {% endblock javascripts %}

@@ -8,7 +8,14 @@
 {% block content %}
 {%load static%}
 <style>
-
+  .in_expect{
+    width: 25%;
+  }
+  @media screen and (max-width: 960px) {  
+    .in_expect{
+    width: 45%;
+  }
+  }
   #footer{
         margin-top: 1rem;
         color: white;
@@ -284,15 +291,61 @@
                         
                     </div>
                     <div class="card-body">
-                    
-                      
-                          <div class="row">
-                            <div class="col-sm-12 mb-5" style="" id="flt_div">
-                              <a href="" data-toggle="modal" data-target="#flt_id" style="text-decoration: none;"><button class="btn btn-primary pl-4 pr-4 pb-2 pt-2" id="">Filter By OrderID</button></a>
-                        
-                              <a href="" data-toggle="modal" data-target="#flt_date" style="text-decoration: none;"><button class="btn btn-primary  pb-2 pt-2" id="filter">Filter by Date</button></a>
+                      <div class="row">
+                        <div class="col-6">
+
+                        </div>
+                        <div class="col-6">
+
+                            
+                            
+                            <div class="float-right btn-group btn-group-toggle mr-4"  >
+                                <a  style="text-decoration: none;" href="" data-toggle="modal" data-target="#flt_id" title="filter by id">
+                                <div class="btn btn-sm btn-primary btn-simple"  >
+                                  
+                                    <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Id Filter</span>
+                                    <span class="d-block d-sm-none">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                                        <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+                                      </svg>
+                                    </span>
+                                </div>
+
+                                </a>
+                                <a  style="text-decoration: none;"  href="" data-toggle="modal" data-target="#flt_date" title="Filter by date">
+
+                                <div class="btn btn-sm btn-primary btn-simple" id="1">
+                                    <input type="radio" class="d-none d-sm-none" name="options">
+                                    <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Date Filter</span>
+                                    <span class="d-block d-sm-none">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                        <path d="M7 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5"/>
+                                      </svg>
+                                    </span>
+                                </div>
+                                </a>
+
+                                <a  style="text-decoration: none;"  href="{% url 'prouct_list'%}" title="create order">
+
+                                  <div class="btn btn-sm btn-primary btn-simple" id="1">
+                                      <input type="radio" class="d-none d-sm-none" name="options">
+                                      <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Create orders</span>
+                                      <span class="d-block d-sm-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+                                          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                                          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                        </svg>
+                                      </span>
+                                  </div>
+                                  </a>
+                                
                             </div>
-                          </div>
+                        </div>
+                    </div>
+                </div>
+                      
+                          
                      
                           {%for i in orders%}
                           
@@ -319,6 +372,13 @@
                                           <a class="dropdown-item" href="" onclick="add_stage('{{i.id}}','arrived')">Arrived</a>
                                         </div>
                                       </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-sm-12 mt-2" style="text-align: right;">
+                                      <label for="" >Delivery Date : &nbsp;&nbsp; </label>
+                                      <input type="date" class="form-control mr-3 mb-2 in_expect" id="in_expect{{i.id}}" style="float: right;" onchange="update_date_crm('{{i.id}}','{{i.id}}')" value="{{i.delivery_date |date:'Y-m-d'}}">
                                     </div>
                                   </div>
                                   
@@ -446,6 +506,12 @@
                                           <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','arrived')">Arrived</a>
                                         </div>
                                       </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-sm-12 mt-2" style="text-align: right;">
+                                      <label for="" >Delivery Date : &nbsp;&nbsp; </label>
+                                      <input type="date" class="form-control mr-3 mb-2 in_expect" id="in_expect{{i.regno}}" style="float: right;" onchange="update_date('{{i.regno}}', '{{i.regno}}')" value="{{i.delivery_date |date:'Y-m-d'}}">
                                     </div>
                                   </div>
                                   
@@ -831,5 +897,38 @@
     
     </script>
 
+<script>
+  function update_date(id,cnt){
+    var date=document.getElementById(`in_expect${cnt}`).value;
+    
+    $.ajax({
+          type: "GET",
+          url: "{% url 'up_expect' %}",
+          data: {
+              ele : id,
+              count:date,
+              
+          },
+          success:function(response){
+            alert("Order Delivery Expected Date Update Successfully")
+          }});
+  }
+</script>
 
+<script>
+  function update_date_crm(id,cnt){
+    var date=document.getElementById(`in_expect${cnt}`).value;
+    $.ajax({
+          type: "GET",
+          url: "{% url 'up_expect_crm' %}",
+          data: {
+              ele : id,
+              count:date,
+              
+          },
+          success:function(response){
+                alert("Order Delivery Expected Date Update Successfully")
+          }});
+  }
+</script>
 {% endblock javascripts %}

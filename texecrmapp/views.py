@@ -786,7 +786,21 @@ def today_orders(request):
         }
     return render(request, 'home/today_orders.html', context)
 
+def up_expect(request):
+    ele = request.GET.get('ele')
+    count = request.GET.get('count')
+    itm=orders.objects.get(regno=ele)
+    itm.delivery_date=count
+    itm.save()
+    return JsonResponse({"status":" not"})
 
+def up_expect_crm(request):
+    ele = request.GET.get('ele')
+    count = request.GET.get('count')
+    itm=orders_crm.objects.get(id=ele)
+    itm.delivery_date=count
+    itm.save()
+    return JsonResponse({"status":" not"})
 
 def filter_today_id(request):
     if request.method=="POST":
@@ -929,7 +943,7 @@ def view_items_orders(request,id):
         regst=int(cmp_reg.id)+1
     else:
         regst=1
-    regss="ORD"+str(regst)+str(dt.day)+str(dt.year)[-2:]
+    regss="ORD"+str(0)+str(regst)+str(dt.day)+str(dt.year)[-2:]
 
     items=item.objects.get(id=id)
     sub=sub_images.objects.filter(item=items)
@@ -1323,7 +1337,6 @@ def profile(request):
     return render(request, 'staff/profile.html',context)
 
 def edit_user_profile(request,id):
-    print("haii")
     if request.method == "POST":
         form = users.objects.get(id=id)
         eml=form.email
@@ -1353,3 +1366,45 @@ def edit_user_profile(request,id):
         
         return redirect ("profile")
     return redirect ("profile")
+
+def profile_user_prop(request):
+    ids=request.session['userid']
+    usr=users.objects.get(id=ids)
+    
+    context={
+        'pro':usr,
+        'user':usr,
+    }
+    return render(request, 'user/profile_user.html',context)
+
+def edit_profile_user(request,id):
+
+    if request.method == "POST":
+        form = users.objects.get(id=id)
+        eml=form.email
+      
+        form.name = request.POST.get('name',None)
+
+        form.dob = request.POST.get('date_of_birth',None)
+        form.number = request.POST.get('phone_number',None)
+        form.email = request.POST.get('email',None)
+        if request.FILES.get('image',None) == None:
+            pass
+        else:
+            form.profile = request.FILES.get('image',None)
+        form.addres = request.POST.get('address',None)
+        form.location = request.POST.get('location')
+        if request.POST.get('password',None) == "":
+            form.password == form.password
+        else:
+            if request.POST.get('password',None) == request.POST.get('con_password',None):
+                form.password == request.POST.get('password',None)
+            else:
+                messages.error(request,"Passwords do not match!")
+                return redirect ("profile_user")
+       
+        form.save()
+   
+        
+        return redirect ("profile_user")
+    return redirect ("profile_user")

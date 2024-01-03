@@ -37,7 +37,7 @@ urlpatterns = [
     path('cart_change_meterial',views.cart_change_meterial, name='cart_change_meterial'),
     path('cart_change_model',views.cart_change_model, name='cart_change_model'),
     path('save_cart/<int:id>',views.save_cart, name='save_cart'),
-    path('orders_list/<int:id>',views.orders_list, name='orders_list'),
+    path('orders_list',views.orders_list, name='orders_list'),
     path('filter_order',views.filter_order, name='filter_order'),
     path('filter_order_id',views.filter_order_id, name='filter_order_id'),
     path('change_order_status',views.change_order_status, name='change_order_status'),
@@ -52,21 +52,24 @@ urlpatterns = [
     path('orders_list_client/<int:id>',views.orders_list_client, name='orders_list_client'),
     path('change_compl_status',views.change_compl_status, name='change_compl_status'),
     path('delete_comp/<int:id>',views.delete_comp, name='delete_comp'),
+    path('up_expect',views.up_expect, name='up_expect'),
+    path('up_expect_crm',views.up_expect_crm, name='up_expect_crm'),
     
     #########################################################################Staff Module
     path('staff_index',views.staff_index, name='staff_index'),
     path('registrations',views.registrations, name='registrations'),
     path('icons',views.icons, name='icons'),
+    path('profile',views.profile, name='profile'),
+    path('edit_user_profile/<int:id>',views.edit_user_profile, name='edit_user_profile'),
     ########################################################################USER MODULE
     path('user_dashboard',views.user_dashboard, name='user_dashboard'),
     path('complaint_servicess',views.complaint_servicess, name='complaint_servicess'),
     path('order_user_view',views.order_user_view, name='order_user_view'),
     path('cancel_order/<int:id>',views.cancel_order, name='cancel_order'),
     path('delete_comp_usr/<int:id>',views.delete_comp_usr, name='delete_comp_usr'),
-    path('profile',views.profile, name='profile'),
-    path('edit_user_profile/<int:id>',views.edit_user_profile, name='edit_user_profile'),
+    path('profile_user_prop',views.profile_user_prop, name='profile_user_prop'),
+    path('edit_profile_user/<int:id>',views.edit_profile_user, name='edit_profile_user'),
     ######################################################################################
     path('logout',views.logout, name='logout'),
 
-    
 ]
