@@ -1,11 +1,18 @@
 {% extends "layouts/base.html" %}
 
 {% block title %} Dashboard {% endblock %} 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+      
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+
 
     <div class="content">
         <div class="row">
@@ -14,28 +21,28 @@
                     <div class="card-header ">
                         <div class="row">
                             <div class="col-sm-6 text-left">
-                                <h5 class="card-category">Total Shipments</h5>
+                                <h5 class="card-category"></h5>
                                 <h2 class="card-title">Performance</h2>
                             </div>
                             <div class="col-sm-6">
                                 <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
                                     <label class="btn btn-sm btn-primary btn-simple active" id="0">
                                         <input type="radio" name="options" checked>
-                                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Accounts</span>
+                                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Item</span>
                                         <span class="d-block d-sm-none">
                         <i class="tim-icons icon-single-02"></i>
                     </span>
                                     </label>
                                     <label class="btn btn-sm btn-primary btn-simple" id="1">
                                         <input type="radio" class="d-none d-sm-none" name="options">
-                                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Purchases</span>
+                                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Category</span>
                                         <span class="d-block d-sm-none">
                         <i class="tim-icons icon-gift-2"></i>
                     </span>
                                     </label>
                                     <label class="btn btn-sm btn-primary btn-simple" id="2">
                                         <input type="radio" class="d-none" name="options">
-                                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Sessions</span>
+                                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Orders</span>
                                         <span class="d-block d-sm-none">
                         <i class="tim-icons icon-tap-02"></i>
                     </span>
@@ -94,165 +101,77 @@
                 </div>
             </div>
         </div>
+
+        
+
         <div class="row">
             <div class="col-lg-6 col-md-12">
                 <div class="card card-tasks">
                     <div class="card-header ">
-                        <h6 class="title d-inline">Tasks(5)</h6>
-                        <p class="card-category d-inline">today</p>
+                        <h6 class="title d-inline">Today Events </h6>
+                        
                         <div class="dropdown">
                             <button type="button" class="btn btn-link dropdown-toggle btn-icon"
                                     data-toggle="dropdown">
                                 <i class="tim-icons icon-settings-gear-63"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#pablo">Action</a>
-                                <a class="dropdown-item" href="#pablo">Another action</a>
-                                <a class="dropdown-item" href="#pablo">Something else</a>
+                                <a class="dropdown-item" onclick=date_get()>Find with date</a>
+                    
                             </div>
                         </div>
                     </div>
                     <div class="card-body ">
+                      <div class="row"  >
+                        <div class="col-sm-12">
+                          <form action="{% url 'filter_date_event'%}" class="form" id="form_filter" style="display: none;" method="POST">
+                            {% csrf_token %}
+                            <input type="date" name="date_filter" id="event_date" class="form-control"/>
+                            <input type="submit" value="find" class=" btn btn-fill btn-primary mt-2" style="float: right;">
+                          </form>
+                        </div>
+                      </div>
                         <div class="table-full-width table-responsive">
                             <table class="table">
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                            <span class="check"></span>
-                            </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">Update the Documentation</p>
-                                        <p class="text-muted">Dwuamish Head, Seattle, WA 8:47 AM</p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link"
-                                                data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="" checked="">
-                                                <span class="form-check-sign">
-                            <span class="check"></span>
-                            </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">GDPR Compliance</p>
-                                        <p class="text-muted">The GDPR is a regulation that requires businesses to
-                                            protect the personal data and privacy of Europe citizens for
-                                            transactions that occur within EU member states.</p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link"
-                                                data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                            <span class="check"></span>
-                            </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">Solve the issues</p>
-                                        <p class="text-muted">Fifty percent of all respondents said they would be
-                                            more likely to shop at a company </p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link"
-                                                data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                            <span class="check"></span>
-                            </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">Release v2.0.0</p>
-                                        <p class="text-muted">Ra Ave SW, Seattle, WA 98116, SUA 11:19 AM</p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link"
-                                                data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                            <span class="check"></span>
-                            </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">Export the processed files</p>
-                                        <p class="text-muted">The report also shows that consumers will not easily
-                                            forgive a company once a breach exposing their personal data
-                                            occurs. </p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link"
-                                                data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                            <span class="check"></span>
-                            </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">Arival at export process</p>
-                                        <p class="text-muted">Capitol Hill, Seattle, WA 12:34 AM</p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link"
-                                                data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                <thead thead class=" text-primary">
+                                  <tr>
+                                    <th>
+                                        Start time
+                                    </th>
+                                    <th>
+                                        Event
+                                    </th>
+                                    <th>
+                                      End time
+                                    </th>
+                                    
+                                  </tr>
+                                </thead>
+                                <tbody style="font-size: 15px;">
+                                  {% if event%}
+                                  {% for i in event%}
+                                    <tr>
+                                      <td>{{i.start}}</td>
+                                      <td>{{i.name}}</td>
+                                      <td>{{i.end}}</td>
+                                    </tr>
+                                    {%endfor%}
+                                  {%else%}
+                                  <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                  </tr>
+                                  <tr class="bg-danger">
+                                    <td></td>
+                                    <td>No Events</td>
+                                    <td></td>
+                                  </tr>
+                                  
+                                  {%endif%}
+
+                                    
+                                  
                                 </tbody>
                             </table>
                         </div>
@@ -262,129 +181,40 @@
             <div class="col-lg-6 col-md-12">
                 <div class="card ">
                     <div class="card-header">
-                        <h4 class="card-title"> Simple Table</h4>
+                        <h4 class="card-title"> Create Event</h4>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table tablesorter " id="">
-                                <thead class=" text-primary">
-                                <tr>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Country
-                                    </th>
-                                    <th>
-                                        City
-                                    </th>
-                                    <th class="text-center">
-                                        Salary
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        Dakota Rice
-                                    </td>
-                                    <td>
-                                        Niger
-                                    </td>
-                                    <td>
-                                        Oud-Turnhout
-                                    </td>
-                                    <td class="text-center">
-                                        $36,738
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Minerva Hooper
-                                    </td>
-                                    <td>
-                                        Curaçao
-                                    </td>
-                                    <td>
-                                        Sinaai-Waas
-                                    </td>
-                                    <td class="text-center">
-                                        $23,789
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Sage Rodriguez
-                                    </td>
-                                    <td>
-                                        Netherlands
-                                    </td>
-                                    <td>
-                                        Baileux
-                                    </td>
-                                    <td class="text-center">
-                                        $56,142
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Philip Chaney
-                                    </td>
-                                    <td>
-                                        Korea, South
-                                    </td>
-                                    <td>
-                                        Overland Park
-                                    </td>
-                                    <td class="text-center">
-                                        $38,735
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Doris Greene
-                                    </td>
-                                    <td>
-                                        Malawi
-                                    </td>
-                                    <td>
-                                        Feldkirchen in Kärnten
-                                    </td>
-                                    <td class="text-center">
-                                        $63,542
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Mason Porter
-                                    </td>
-                                    <td>
-                                        Chile
-                                    </td>
-                                    <td>
-                                        Gloucester
-                                    </td>
-                                    <td class="text-center">
-                                        $78,615
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Jon Porter
-                                    </td>
-                                    <td>
-                                        Portugal
-                                    </td>
-                                    <td>
-                                        Gloucester
-                                    </td>
-                                    <td class="text-center">
-                                        $98,615
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <form action="{% url 'create_event'%}" method="POST">
+                          {% csrf_token %}
+                          <div class="col-md-12 px-md-1">
+                            <div class="form-group">
+                                <label style="font-size: 16px;">Start date and time</label>
+                                <input type="datetime-local" placeholder="" class="form-control" name="start_dt">
+                            </div>
+                            
+                          </div>
+                          <div class="col-md-12 px-md-1">
+                            <div class="form-group">
+                                <label style="font-size: 16px;">End date and time</label>
+                                <input type="datetime-local" placeholder="" class="form-control" name="end_dt">
+                            </div>
+                            
+                          </div>
+                          <div class="col-md-12 px-md-1">
+                            <div class="form-group">
+                                <label style="font-size: 16px;">Events</label>
+                                <textarea name="event_des" id="" class="form-control" placeholder="type your event"></textarea>
+                            </div>
+                            
+                          </div>
+                          <div class="col-md-12 px-md-1">
+                            <div class="form-group">
+                                <input type="submit" value="create" class="btn btn-fill btn-primary">
+                            </div>
+                            
+                          </div>
+                          
+                        </form>
                     </div>
                 </div>
             </div>
@@ -397,9 +227,162 @@
 {% block javascripts %}
 
 <script>
+  function date_get(){
+    var dis=document.getElementById("form_filter").style.display
+
+    if (dis=="none"){
+
+      document.getElementById("form_filter").style.display="block"
+    }else{
+      document.getElementById("form_filter").style.display="none"
+    }
+  }
+</script>
+<script>
     $(document).ready(function () {
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
+        
+        var calendar = $('#calendar').fullCalendar({
+          header: {
+              left: 'prev,next today',
+              center: 'title',  
+              right: 'month,agendaWeek,agendaDay,'
+          },
+          events: '/all_events',
+          selectable: true,
+          selectHelper: true,
+          editable: true,
+          eventLimit: true,
+          select: function (start, end, allDay) {
+              // display the click date
+              
+              $.ajax({
+                  type: "GET",
+                  url: "{% url 'get_date_event' %}",
+                  data: {
+                      day : $.fullCalendar.formatDate(start, "DD"),
+                      month : $.fullCalendar.formatDate(start, "MM"),
+                      year : $.fullCalendar.formatDate(start, "Y"),
+          
+                  },
+                  success:function(response){
+                      names = response.names  
+                      starts=response.strt  
+                      ends=response.ends  
+                      document.getElementById('list_event').style.display="none"
+                      $(`#crack`).remove()
+                      for (var i = 0; i < names.length; i++) {
+                          
+                          $(`#creqtes`).append(
+                              `
+                              <div class="row" id="crack">
+                                  <div class="col-3 card pt-3">
+                                      <p>${starts[i]}</p>
+                                  </div>
+                                  <div class="col-6 card pt-3">
+                                      <p>${names[i]}</p>
+                                  </div>
+                                  <div class="col-3 card pt-3">
+                                      <p>${ends[i]}</p>
+                                  </div>
+                              </div>
+                                                              
+                              `
+                          );
+                      }
+                  
+                  }});
+
+              
+              
+          },
+
+          dayRightclick: function(date, jsEvent, view) {
+          // This function is triggered when a user right-clicks on a day in the calendar
+          // You can show a context menu or perform any other action
+
+          // Example: Show an alert with the clicked date
+          alert('Right-clicked on ' + date.format());
+          },
+
+          eventResize: function (event) {
+              var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+              var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+              var title = event.title;
+              var id = event.id;
+              $.ajax({
+                  type: "GET",
+                  url: '/update',
+                  data: {'title': title, 'start': start, 'end': end, 'id': id},
+                  dataType: "json",
+                  success: function (data) {
+                      calendar.fullCalendar('refetchEvents');
+                      alert('Event Update');
+                  },
+                  error: function (data) {
+                      alert('There is a problem!!!');
+                  }
+              });
+          },
+
+          eventDrop: function (event) {
+              
+              var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+              var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+              var title = event.title;
+              var id = event.id;
+              $.ajax({
+                  type: "GET",
+                  url: '/update',
+                  data: {'title': title, 'start': start, 'end': end, 'id': id},
+                  dataType: "json",
+                  success: function (data) {
+                      calendar.fullCalendar('refetchEvents');
+                      alert('Event Update');
+                  },
+                  error: function (data) {
+                      alert('There is a problem!!!');
+                  }
+              });
+          },
+
+
+
+          eventClick: function (event) {
+                  var flashMessage = document.getElementById("flashMessage");
+                  var id = event.id;
+                  $.ajax({
+                      type: "GET",
+                      url: '/remove',
+                      data: {'id': id},
+                      dataType: "json",
+                      success: function (data) {
+                          calendar.fullCalendar('refetchEvents');
+                          // Show the flash message
+                          flashMessage.style.display = "block";
+                          
+                          if (data.title){
+                              document.getElementById("text_flash").innerHTML = `${data.title}`;
+                          }else{
+                              document.getElementById("text_flash").innerHTML= `Ordrer_id : ${data.dt} <br>Order Date : ${data.date} <br> Order Parson : ${data.or_nm}`
+                          }
+
+                          
+                          // Hide the flash message after 3 seconds (adjust as needed)
+                          setTimeout(function () {
+                              flashMessage.style.display = "none";
+                          }, 6000);
+                          
+                      },
+                      error: function (data) {
+                          alert('There is a problem!!!');
+                      }
+                  });
+              
+          },
+
+      });
 
     });
 </script>
@@ -830,8 +813,8 @@ demo = {
 
 
 
-    var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-    var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 200];
+    var chart_labels = [{% for data in data %} '{{ data.name }}', {% endfor %}];
+    var chart_data = [{% for data in data %} {{ data.buying_count }}, {% endfor %}];
 
 
     var ctx = document.getElementById("chartBig1").getContext('2d');
@@ -873,7 +856,8 @@ demo = {
       myChartData.update();
     });
     $("#1").click(function() {
-      var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
+      var chart_labels = [{% for data in sub_cat %} '{{ data.subcategory }}', {% endfor %}];
+      var chart_data = [{% for data in sub_cat %} {{ data.buying_count }}, {% endfor %}];
       var data = myChartData.config.data;
       data.datasets[0].data = chart_data;
       data.labels = chart_labels;
@@ -881,7 +865,8 @@ demo = {
     });
 
     $("#2").click(function() {
-      var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 300];
+      var chart_labels = [{% for data in nm %} '{{data}}', {% endfor %}];
+      var chart_data = [{% for data in cnt %} '{{ data }}', {% endfor %}];
       var data = myChartData.config.data;
       data.datasets[0].data = chart_data;
       data.labels = chart_labels;

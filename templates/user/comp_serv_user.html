@@ -64,6 +64,7 @@
                                 <th style="font-size: 15px;width: 200px;">Ph No</th>
                                 <th style="font-size: 15px;width: 200px;">Status</th>
                                 <th style="font-size: 15px;width: 200px;">Action</th>
+                                <th style="font-size: 15px;width: 200px;"></th>
                             </thead>
                             <tbody>
                             {% for k in comp%}
@@ -76,6 +77,8 @@
                                 <td style="font-size: 16px;color: white;"><button type="button" class="btn" data-toggle="modal" data-target="#exampleModalLong{{k.id}}" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;">
                                         view
                                     </button></td>
+
+                                    <td style="font-size: 16px;color: white;"><a href="{% url 'delete_comp_usr' k.id%}" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;" class="pl-3 pr-3 pt-2 pb-2" onclick="return confirm('Are you sure, you want to delete it?')"><i class="tim-icons icon-trash-simple"></i></a></td>
                                 
                               </tr>
                               {%endfor%}
@@ -94,6 +97,7 @@
                                 <th style="font-size: 15px;width: 200px;">Ph No</th>
                                 <th style="font-size: 15px;width: 200px;">Status</th>
                                 <th style="font-size: 15px;width: 200px;">Action</th>
+                                <th style="font-size: 15px;width: 200px;"></th>
                             </thead>
                             <tbody>
                             
@@ -114,6 +118,8 @@
                                     </button>
                             
                                 </td>
+
+                                <td style="font-size: 16px;color: white;"><a href="{% url 'delete_comp_usr' k.id%}" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;" class="pl-3 pr-3 pt-2 pb-2" onclick="return confirm('Are you sure, you want to delete it?')"><i class="tim-icons icon-trash-simple"></i></a></td>
                                 
                               </tr>
                               {%endfor%}

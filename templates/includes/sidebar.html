@@ -61,10 +61,7 @@
                 {% if user%}
                     {% if user.role == "staff"%}
                     
-                        {% if user.complaint == "on"%}
                         
-                        {%else%}
-                        {%endif%}
                     {%endif%}
                 {%else%}
                 <li class='{% if segment == "staff_home"%} active {% endif %}'>

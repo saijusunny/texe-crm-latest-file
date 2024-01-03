@@ -131,7 +131,11 @@ def resetPassword(request):
 def dashboard(request):
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     data = item.objects.all()
     sub_cat=sub_category.objects.all()
     today = datetime.now()
@@ -162,7 +166,11 @@ def filter_date_event(request):
     if request.method=="POST":
         dates=request.POST.get('date_filter',None)
         segment="dashboard"
-        user=None
+        try:
+            usr=request.session['userid']
+            user=users.objects.get(id=usr)
+        except:
+            user=None
         data = item.objects.all()
         sub_cat=sub_category.objects.all()
         today = datetime.now()
@@ -213,13 +221,21 @@ def staff_home(request):
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
     staffs=users.objects.filter(role="staff")
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     return render(request,'home/staff_home.html',{'segment':segment,'staffs':staffs,'user':user,})
 
 def add_staff(request):
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     if request.method=="POST":
         user_reg=users.objects.all().last()
         dt= date.today()
@@ -272,7 +288,11 @@ def add_staff(request):
 def edit_staff(request,id):
 
     usr=users.objects.get(id=id)
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     return render(request,'home\edits_staff.html',{'usr':usr,'user':user,})
  
 
@@ -317,7 +337,11 @@ def ser_cmp(request):
     serv=complaint_service.objects.filter(type="service")
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     context={
         'comp':comp,
         'serv':serv,
@@ -325,10 +349,28 @@ def ser_cmp(request):
         'user':user,
     }
     return render(request,'home/service_compl.html',context)
+def change_compl_status(request):
+    ele = request.GET.get('ele')
+    count = request.GET.get('stage')
+
+    itm=complaint_service.objects.get(id=ele)
+    itm.status=count
+    itm.save()
+    return JsonResponse({"status":" not"})
+
+
+def delete_comp(request,id):
+    itm=complaint_service.objects.get(id=id)
+    itm.delete()
+    return redirect('ser_cmp')
 
 def add_complaint(request):
     names=users.objects.filter(role="user")
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     dt= date.today()
     cmp_reg=complaint_service.objects.all().last()
     if cmp_reg:
@@ -373,7 +415,11 @@ def add_user_complaint(request):
     user_reg=users.objects.all().last()
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     if request.method=='POST':
         urs=users()
         dt= date.today()
@@ -406,7 +452,11 @@ def add_service(request):
     names=users.objects.filter(role="user")
     dt= date.today()
     cmp_reg=complaint_service.objects.all().last()
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     if cmp_reg:
         regst=int(cmp_reg.id)+1
     else:
@@ -450,7 +500,11 @@ def add_user_service(request):
     user_reg=users.objects.all().last()
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     if request.method=='POST':
         urs=users()
         dt= date.today()
@@ -481,7 +535,11 @@ def add_user_service(request):
 def users_lst(request):
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     context={
         'segment':segment,
         'user':user,
@@ -560,7 +618,11 @@ def remove(request):
 def orders_dta(request):
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     orde=orders_crm.objects.all().order_by("-id")
     ord_item=checkout_item_crm.objects.all()
 
@@ -581,7 +643,11 @@ def filter_order(request):
         st_dt=request.POST.get('str_dt')
         en_dt=request.POST.get('end_dt')
         segment="orders_dta"
-        user=None
+        try:
+            usr=request.session['userid']
+            user=users.objects.get(id=usr)
+        except:
+            user=None
         orde = orders_crm.objects.filter(date__gte=st_dt,date__lte=en_dt)
         ord_item=checkout_item_crm.objects.all()
 
@@ -607,7 +673,11 @@ def filter_order_id(request):
         orde_client=orders.objects.filter(regno=ord_id)
         ord_item_client=checkout_item.objects.all()
         segment="orders_dta"
-        user=None
+        try:
+            usr=request.session['userid']
+            user=users.objects.get(id=usr)
+        except:
+            user=None
         context={
             "orders":orde,
             "ord_item":ord_item,
@@ -622,7 +692,11 @@ def filter_order_id(request):
 def pending_orders(request):
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     orde=orders_crm.objects.filter(stage="pending").order_by("-id")
     
     ord_item=checkout_item_crm.objects.all()
@@ -644,7 +718,11 @@ def filter_pending(request):
         st_dt=request.POST.get('str_dt')
         en_dt=request.POST.get('end_dt')
         segment="orders_dta"
-        user=None
+        try:
+            usr=request.session['userid']
+            user=users.objects.get(id=usr)
+        except:
+            user=None
         orde = orders_crm.objects.filter(date__gte=st_dt,date__lte=en_dt,stage="pending")
         ord_item=checkout_item_crm.objects.all()
         orde_client=orders.objects.filter(date__gte=st_dt,date__lte=en_dt,stage="pending")
@@ -666,7 +744,11 @@ def filter_pending_id(request):
         orde = orders_crm.objects.filter(regno=ord_id,stage="pending" )
         ord_item=checkout_item_crm.objects.all()
         segment="orders_dta"
-        user=None
+        try:
+            usr=request.session['userid']
+            user=users.objects.get(id=usr)
+        except:
+            user=None
         orde_client=orders.objects.filter(regno=ord_id,stage="pending" )
         ord_item_client=checkout_item.objects.all()
         context={
@@ -683,7 +765,11 @@ def filter_pending_id(request):
 def today_orders(request):
     resolved_func = resolve(request.path_info).func
     segment="orders_dta"
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     orde=orders_crm.objects.filter(date__date=date.today())
     
     ord_item=checkout_item_crm.objects.all()
@@ -711,7 +797,11 @@ def filter_today_id(request):
         ord_item_client=checkout_item.objects.all()
         
         segment="orders_dta"
-        user=None
+        try:
+            usr=request.session['userid']
+            user=users.objects.get(id=usr)
+        except:
+            user=None
         context={
             "orders":orde,
             "ord_item":ord_item,
@@ -781,7 +871,11 @@ def orders_list(request,id):
     ord_item=checkout_item_crm.objects.filter(orders=id)
  
     segment="orders_dta"
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     context={
         "orders":orde,
         "ord_item":ord_item,
@@ -795,7 +889,11 @@ def orders_list_client(request,id):
     ord_item=checkout_item.objects.filter(id=id)
  
     segment="orders_dta"
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     context={
         "orders":orde,
         "ord_item":ord_item,
@@ -806,7 +904,11 @@ def orders_list_client(request,id):
 
 def prouct_list(request):
     segment="orders_dta"
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     
 
     items=item.objects.all()
@@ -814,9 +916,13 @@ def prouct_list(request):
 
 def view_items_orders(request,id):
     segment="orders_dta"
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     names=users.objects.filter(role="user")
-    user=None
+   
     dt= date.today()
     cmp_reg=orders.objects.all().last()
     if cmp_reg:
@@ -851,7 +957,11 @@ def add_user_order(request,id):
     user_reg=users.objects.all().last()
 
     segment="orders_dta"
-    user=None
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
     if request.method=='POST':
         urs=users()
         dt= date.today()
@@ -1104,14 +1214,31 @@ def cart_change_model(request):
 def staff_index(request):
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
-    ids=request.session['userid']
-    user=users.objects.get(id=ids)
-    print(user.role)
-    context={
-        'segment':segment,
-        'user':user,
-    }
-    return render(request,"staff\staff_index.html",context)
+    usr=request.session['userid']
+    userss=users.objects.get(id=usr)
+    data = item.objects.all()
+    sub_cat=sub_category.objects.all()
+    today = datetime.now()
+    sub=orders.objects.filter(date__month=today.month).values_list('date__day', flat=True).distinct()
+    event=events.objects.filter(start=date.today())
+
+    nm=[]
+    cnt=[]
+    for i in sub:
+        
+        nm.append(i)
+        qty=orders.objects.filter(date__day=i).count()
+        cnt.append(qty)
+
+    sub2=orders_crm.objects.filter(date__month=today.month).values_list('date__day', flat=True).distinct()
+    for i in sub2:
+        
+        nm.append(i)
+        qty=orders.objects.filter(date__day=i).count()
+        cnt.append(qty)
+    
+ 
+    return render(request,"staff\staff_index.html",{'segment':segment,"user":userss,'sub_cat':sub_cat,'nm':nm,'cnt':cnt,'data': data,'event':event})
 
 def logout(request):
     if 'userid' in request.session:  
@@ -1178,4 +1305,51 @@ def cancel_order(request,id):
     ords=orders_crm.objects.get(id=id)
     ords.status=="cancel"
     ords.save()
-    return redirect('my_order')
+    return redirect('order_user_view')
+
+def delete_comp_usr(request,id):
+    itm=complaint_service.objects.get(id=id)
+    itm.delete()
+    return redirect('complaint_servicess')
+
+def profile(request):
+    ids=request.session['userid']
+    usr=users.objects.get(id=ids)
+    
+    context={
+        'pro':usr,
+        'user':usr,
+    }
+    return render(request, 'staff/profile.html',context)
+
+def edit_user_profile(request,id):
+    print("haii")
+    if request.method == "POST":
+        form = users.objects.get(id=id)
+        eml=form.email
+      
+        form.name = request.POST.get('name',None)
+
+        form.dob = request.POST.get('date_of_birth',None)
+        form.number = request.POST.get('phone_number',None)
+        form.email = request.POST.get('email',None)
+        if request.FILES.get('image',None) == None:
+            pass
+        else:
+            form.profile = request.FILES.get('image',None)
+        form.addres = request.POST.get('address',None)
+        form.location = request.POST.get('location')
+        if request.POST.get('password',None) == "":
+            form.password == form.password
+        else:
+            if request.POST.get('password',None) == request.POST.get('con_password',None):
+                form.password == request.POST.get('password',None)
+            else:
+                messages.error(request,"Passwords do not match!")
+                return redirect ("profile")
+       
+        form.save()
+   
+        
+        return redirect ("profile")
+    return redirect ("profile")

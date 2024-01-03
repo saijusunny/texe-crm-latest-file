@@ -90,6 +90,7 @@
                                 <th style="font-size: 15px;width: 200px;">Ph No</th>
                                 <th style="font-size: 15px;width: 200px;">Status</th>
                                 <th style="font-size: 15px;width: 200px;">Action</th>
+                                <th style="font-size: 15px;width: 200px;"></th>
                             </thead>
                             <tbody>
                             {% for k in comp%}
@@ -99,17 +100,20 @@
                                 <td style="font-size: 16px;color: white;">{{k.users.name}}</td>
                                 <td style="font-size: 16px;color: white;">{{k.users.number}}</td>
                                 <td style="font-size: 16px;color: white;">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;">
                                         {{k.status}}
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="position: absolute; z-index: 999;">
-                                      <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','pending')">Pending</a>
-                                      <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','rectify')">Rectify</a>
+                                      <a class="dropdown-item" href="" onclick="add_status('{{k.id}}','pending')">Pending</a>
+                                      <a class="dropdown-item" href="" onclick="add_status('{{k.id}}','rectify')">Rectify</a>
                                       
                                     </div>
                                   </div>
                                 </td>
-                                <td style="font-size: 16px;color: white;"><a href="" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;" class="pl-3 pr-3 pt-2 pb-2" title="edit"><i class="tim-icons icon-pencil"></i></a></td>
+                                <td style="font-size: 16px;color: white;"><button type="button" class="btn" data-toggle="modal" data-target="#exampleModalLong{{k.id}}" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;">
+                                    view
+                                </button></td>
+                                <td style="font-size: 16px;color: white;"><a href="{% url 'delete_comp' k.id%}" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;" class="pl-3 pr-3 pt-2 pb-2" title="delete" onclick="return confirm('Are you sure, you want to delete it?')"><i class="tim-icons icon-trash-simple"></i></a></td>
                                 
                               </tr>
                               {%endfor%}
@@ -129,6 +133,7 @@
                                 <th style="font-size: 15px;width: 200px;">Ph No</th>
                                 <th style="font-size: 15px;width: 200px;">Status</th>
                                 <th style="font-size: 15px;width: 200px;">Action</th>
+                                <th style="font-size: 15px;width: 200px;"></th>
                             </thead>
                             <tbody>
                             
@@ -143,24 +148,28 @@
                                 <td style="font-size: 16px;color: white;">{{k.users.number}}</td>
                                 <td style="font-size: 16px;color: white;">
                                     <div class="dropdown" style="position: relative;float: right; top: 0;right: 20px;">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;">
                                             {{k.status}}
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','pending')">Pending</a>
-                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','designing')">Designing</a>
-                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','cutting')">Cutting</a>
-                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','stiching')">Stiching</a>
-                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','printing')">Printing</a>
-                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','testing')">Testing</a>
-                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','packing')">Packing</a>
-                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','despatch')">Despatch</a>
-                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','arrived')">Arrived</a>
+                                            <a class="dropdown-item" href="" onclick="add_status('{{k.id}}','pending')">Pending</a>
+                                            <a class="dropdown-item" href="" onclick="add_status('{{k.id}}','rectify')">Rectify</a>
                                         </div>
                                       </div>
                                 
                                 </td>
-                                <td style="font-size: 16px;color: white;"><a href="" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;" class="pl-3 pr-3 pt-2 pb-2" ><i class="tim-icons icon-pencil"></i></a></td>
+
+                                <td style="font-size: 16px;color: white;">
+                                    
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong2{{k.id}}" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;">
+                                        view
+                                    </button>
+                            
+                                </td>
+
+                                <td style="font-size: 16px;color: white;"><a href="{% url 'delete_comp' k.id%}" style="text-decoration: none; background: linear-gradient(40deg,#ff0080,#ff8c00 70%);border-radius: 15px; color: white;" class="pl-3 pr-3 pt-2 pb-2" onclick="return confirm('Are you sure, you want to delete it?')"><i class="tim-icons icon-trash-simple"></i></a></td>
+
+                                
                                 
                               </tr>
                               {%endfor%}
@@ -180,10 +189,75 @@
         
     </div>
 
+    <!-- Modal -->
+  {% for k in comp%}
+  <div class="modal fade" id="exampleModalLong{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">{{k.regno}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{k.complaint}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+ 
+        </div>
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+
+  {% for k in serv%}
+  <div class="modal fade" id="exampleModalLong2{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">{{k.regno}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{k.complaint}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+ 
+        </div>
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+
+<script>
+
+    function add_status(id,stg){
+      $.ajax({
+                type: "GET",
+                url: "{% url 'change_compl_status' %}",
+                data: {
+                    ele : id,
+                    stage:stg,
+                    
+                    
+                },
+                success:function(response){
+                    alert("Status Update Successfully")
+                    location.reload()
+                }});
+    }
+
+</script>
 
 <script>
     function show_compl(){

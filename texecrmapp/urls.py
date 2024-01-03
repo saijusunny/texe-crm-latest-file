@@ -50,6 +50,9 @@ urlpatterns = [
     path('change_order_status_client',views.change_order_status_client, name='change_order_status_client'),
     path('change_order_stage_client',views.change_order_stage_client, name='change_order_stage_client'),
     path('orders_list_client/<int:id>',views.orders_list_client, name='orders_list_client'),
+    path('change_compl_status',views.change_compl_status, name='change_compl_status'),
+    path('delete_comp/<int:id>',views.delete_comp, name='delete_comp'),
+    
     #########################################################################Staff Module
     path('staff_index',views.staff_index, name='staff_index'),
     path('registrations',views.registrations, name='registrations'),
@@ -59,6 +62,9 @@ urlpatterns = [
     path('complaint_servicess',views.complaint_servicess, name='complaint_servicess'),
     path('order_user_view',views.order_user_view, name='order_user_view'),
     path('cancel_order/<int:id>',views.cancel_order, name='cancel_order'),
+    path('delete_comp_usr/<int:id>',views.delete_comp_usr, name='delete_comp_usr'),
+    path('profile',views.profile, name='profile'),
+    path('edit_user_profile/<int:id>',views.edit_user_profile, name='edit_user_profile'),
     ######################################################################################
     path('logout',views.logout, name='logout'),
 
