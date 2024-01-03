@@ -47,6 +47,9 @@ urlpatterns = [
     path('filter_pending_id',views.filter_pending_id, name='filter_pending_id'),
     path('today_orders',views.today_orders, name='today_orders'),
     path('filter_today_id',views.filter_today_id, name='filter_today_id'),
+    path('change_order_status_client',views.change_order_status_client, name='change_order_status_client'),
+    path('change_order_stage_client',views.change_order_stage_client, name='change_order_stage_client'),
+    path('orders_list_client/<int:id>',views.orders_list_client, name='orders_list_client'),
     #########################################################################Staff Module
     path('staff_index',views.staff_index, name='staff_index'),
     path('registrations',views.registrations, name='registrations'),

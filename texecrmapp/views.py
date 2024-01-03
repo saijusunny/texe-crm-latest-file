@@ -562,13 +562,17 @@ def orders_dta(request):
     segment=resolved_func.__name__
     user=None
     orde=orders_crm.objects.all().order_by("-id")
-    
     ord_item=checkout_item_crm.objects.all()
+
+    orde_client=orders.objects.all().order_by("-id")
+    ord_item_client=checkout_item.objects.all()
     context={
             'segment':segment,
             'user':user,
             "orders":orde,
             "ord_item":ord_item,
+            'orde_client':orde_client,
+            'ord_item_client':ord_item_client,
         }
     return render(request, 'home/orders.html', context)
 
@@ -580,11 +584,17 @@ def filter_order(request):
         user=None
         orde = orders_crm.objects.filter(date__gte=st_dt,date__lte=en_dt)
         ord_item=checkout_item_crm.objects.all()
+
+        orde_client=orders.objects.filter(date__gte=st_dt,date__lte=en_dt)
+        ord_item_client=checkout_item.objects.all()
+
         context={
             "orders":orde,
             "ord_item":ord_item,
             'segment':segment,
             'user':user,
+            'orde_client':orde_client,
+            'ord_item_client':ord_item_client,
         }
         return render(request,'home/orders.html', context)
 
@@ -594,6 +604,8 @@ def filter_order_id(request):
         ord_id=request.POST.get('ord_id')
         orde = orders_crm.objects.filter(regno=ord_id)
         ord_item=checkout_item_crm.objects.all()
+        orde_client=orders.objects.filter(regno=ord_id)
+        ord_item_client=checkout_item.objects.all()
         segment="orders_dta"
         user=None
         context={
@@ -601,6 +613,8 @@ def filter_order_id(request):
             "ord_item":ord_item,
             'segment':segment,
             'user':user,
+            'orde_client':orde_client,
+            'ord_item_client':ord_item_client,
         }
         return render(request,'home/orders.html', context)
 
@@ -612,11 +626,16 @@ def pending_orders(request):
     orde=orders_crm.objects.filter(stage="pending").order_by("-id")
     
     ord_item=checkout_item_crm.objects.all()
+
+    orde_client=orders.objects.filter(stage="pending").order_by("-id")
+    ord_item_client=checkout_item.objects.all()
     context={
             'segment':segment,
             'user':user,
             "orders":orde,
             "ord_item":ord_item,
+            'orde_client':orde_client,
+            'ord_item_client':ord_item_client,
         }
     return render(request, 'home/pending_orders.html', context)
 
@@ -628,11 +647,15 @@ def filter_pending(request):
         user=None
         orde = orders_crm.objects.filter(date__gte=st_dt,date__lte=en_dt,stage="pending")
         ord_item=checkout_item_crm.objects.all()
+        orde_client=orders.objects.filter(date__gte=st_dt,date__lte=en_dt,stage="pending")
+        ord_item_client=checkout_item.objects.all()
         context={
             "orders":orde,
             "ord_item":ord_item,
             'segment':segment,
             'user':user,
+            'orde_client':orde_client,
+            'ord_item_client':ord_item_client,
         }
         return render(request,'home/pending_orders.html', context)
 
@@ -644,27 +667,36 @@ def filter_pending_id(request):
         ord_item=checkout_item_crm.objects.all()
         segment="orders_dta"
         user=None
+        orde_client=orders.objects.filter(regno=ord_id,stage="pending" )
+        ord_item_client=checkout_item.objects.all()
         context={
             "orders":orde,
             "ord_item":ord_item,
             'segment':segment,
             'user':user,
+            'orde_client':orde_client,
+            'ord_item_client':ord_item_client,
         }
         return render(request,'home/pending_orders.html', context)
 
 
 def today_orders(request):
     resolved_func = resolve(request.path_info).func
-    segment=resolved_func.__name__
+    segment="orders_dta"
     user=None
-    orde=orders_crm.objects.filter(date=date.today()).order_by("-id")
+    orde=orders_crm.objects.filter(date__date=date.today())
     
     ord_item=checkout_item_crm.objects.all()
+    orde_client=orders.objects.filter(date__date=date.today())
+    ord_item_client=checkout_item.objects.all()
+    print(orde_client)
     context={
             'segment':segment,
             'user':user,
             "orders":orde,
             "ord_item":ord_item,
+            'orde_client':orde_client,
+            'ord_item_client':ord_item_client,
         }
     return render(request, 'home/today_orders.html', context)
 
@@ -673,8 +705,11 @@ def today_orders(request):
 def filter_today_id(request):
     if request.method=="POST":
         ord_id=request.POST.get('ord_id')
-        orde = orders_crm.objects.filter(regno=ord_id,stage="pending" )
+        orde = orders_crm.objects.filter(regno=ord_id, date__date=date.today())
         ord_item=checkout_item_crm.objects.all()
+        orde_client=orders.objects.filter(regno=ord_id,date__date=date.today() )
+        ord_item_client=checkout_item.objects.all()
+        
         segment="orders_dta"
         user=None
         context={
@@ -682,6 +717,8 @@ def filter_today_id(request):
             "ord_item":ord_item,
             'segment':segment,
             'user':user,
+            'orde_client':orde_client,
+            'ord_item_client':ord_item_client,
         }
         return render(request,'home/today_orders.html', context)
 
@@ -690,6 +727,33 @@ def change_order_status(request):
     ele = request.GET.get('ele')
     count = request.GET.get('count')
     itm=orders_crm.objects.get(id=ele)
+
+    itm.stage_count=count
+    if int(count)==6:
+        itm.status='arrived'
+        itm.stage="arrived"
+    else:
+        itm.status='delivery'
+        itm.stage="despatch"
+    itm.save()
+    return JsonResponse({"status":" not"})
+
+
+def change_order_stage_client(request):
+    ele = request.GET.get('ele')
+    stg = request.GET.get('stage')
+    print(ele)
+    itm=orders.objects.get(regno=ele)
+
+    itm.stage=stg
+    itm.save()
+    return JsonResponse({"status":" not"})
+
+
+def change_order_status_client(request):
+    ele = request.GET.get('ele')
+    count = request.GET.get('count')
+    itm=orders.objects.get(regno=ele)
 
     itm.stage_count=count
     if int(count)==6:
@@ -711,6 +775,7 @@ def change_order_stage(request):
     itm.save()
     return JsonResponse({"status":" not"})
 
+
 def orders_list(request,id):
     orde = orders_crm.objects.filter(id=id).order_by("-id")
     ord_item=checkout_item_crm.objects.filter(orders=id)
@@ -724,6 +789,20 @@ def orders_list(request,id):
         'user':user,
     }
     return render(request, 'home/orders_list.html', context)
+
+def orders_list_client(request,id):
+    orde = orders.objects.filter(id=id).order_by("-id")
+    ord_item=checkout_item.objects.filter(id=id)
+ 
+    segment="orders_dta"
+    user=None
+    context={
+        "orders":orde,
+        "ord_item":ord_item,
+        'segment':segment,
+        'user':user,
+    }
+    return render(request, 'home/orders_list_client.html', context)
 
 def prouct_list(request):
     segment="orders_dta"
@@ -866,6 +945,7 @@ def save_cart(request,id):
 
         total_amount = itm.offer_price
         numb= request.POST.get('regno',None)
+        
 
         chk=orders_crm()
         chk.user = usr

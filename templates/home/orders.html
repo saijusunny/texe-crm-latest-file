@@ -418,6 +418,136 @@
                             </div>
                           </div>
                           {%endfor%}
+                          
+
+                        
+                          {%for i in orde_client%}
+                          
+                          <div class="row justify-content-center mb-3 outers">
+                            <div class="col-md-12 col-xl-10">
+                               
+                              <div class="card shadow-0 border rounded-3 outers">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-sm-12">
+                                      <div class="dropdown" style="position: relative;float: right; top: 0;right: 20px;">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          {{i.stage}}
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','pending')">Pending</a>
+                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','designing')">Designing</a>
+                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','cutting')">Cutting</a>
+                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','stiching')">Stiching</a>
+                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','printing')">Printing</a>
+                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','testing')">Testing</a>
+                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','packing')">Packing</a>
+                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','despatch')">Despatch</a>
+                                          <a class="dropdown-item" href="" onclick="add_stage_client('{{i.regno}}','arrived')">Arrived</a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div class="row">
+                                    <div class="col-md-12 col-lg-2 col-xl-2 mb-4 mb-lg-0">
+                                      
+                                      <div class="bg-image hover-zoom ripple rounded ripple-surface" >
+                                        <a href="{%url 'orders_list_client' i.id%}">
+                                          {% if i.user.profile == "static\images\static_image\icon.svg"%}
+                                          <img src="{% static 'noimage.jpg' %}"class="w-100"/>
+                                          {%elif i.user.profile == ""%}
+                                          <img src="{% static 'noimage.jpg' %}"class="w-100"/>
+                                          {%else%}
+                                          <img src="http://127.0.0.1:7000{{i.user.profile.url}}"class="w-100"/>
+                                          {%endif%}
+                                        </a>
+                                        <a href="#!">
+                                          <div class="hover-overlay">
+                                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                                          </div>
+                                        </a>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-xl-6 mt-1 ">
+                                      <h5 class="card-title">{{i.user.regno}}</h5>
+                                      <h5 class="card-title">{{i.user.name}}</h5>
+                                      <div class="d-flex flex-row">
+                                      <p class="">
+                                          <span style=" font-size: 12px;">Order Number : {{i.regno}}</span><br>
+                                          <span style=" font-size: 12px;">Ph. No : {{i.user.number}}</span><br>
+                                          <span style=" font-size: 12px;">Address : {{i.user.addres}}</span><br>
+                                          <span style=" font-size: 12px;">Order Date : {{i.date}}</span><br>
+                                          <span style=" font-size: 12px;">Total Amount : ₹{{i.total_amount}}</span><br>
+                                      </p>
+                                      
+                      
+                                      
+                                      </div>
+                                      
+                                      
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-lg-4 col-xl-4 ">
+                                      <div class="d-flex flex-row align-items-center mb-1">
+
+                                        
+                      
+                                        <div class="row">
+                                          <div class="col-sm-12">
+                                              
+                                              <div class="tracking-wrapper">
+                                                  <div class="tracking">
+                                                    <div id="progress_client{{forloop.counter}}" class="progress_client-{{i.stage_count}}">
+                                                      <div class="empty-bar"></div>
+                                                      <div class="color-bar"></div>
+                                                      <ul>
+                                                        <li class="bullet-1">
+                                                          <div class="el"><i class='bx bx-check'></i></div>
+                                                          <div class="txt">Order Processed</div>
+                                                        </li>
+                                                        <li class="bullet-2">
+                                                          <div class="el"><i class='bx bx-check'></i></div>
+                                                          <div class="txt">Order Shipped</div>
+                                                        </li>
+                                                        <li class="bullet-3">
+                                                          <div class="el"><i class='bx bx-check'></i></div>
+                                                          <div class="txt">Order En Route</div>
+                                                        </li>
+                                                        <li class="bullet-4">
+                                                          <div class="el"><i class='bx bx-check '></i></div>
+                                                          <div class="txt">Order Arrived</div>
+                                                        </li>
+                                                      </ul>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                
+                                                <div class="controls">
+                                                  <div>
+                                                    <button id="prev_client" onclick="prev_client('{{forloop.counter}}', '{{i.regno}}')"><i class='bx bx-chevron-left'></i> Prev</button>
+                                                    <button id="next_client" onclick="next_client('{{forloop.counter}}', '{{i.regno}}')">Next <i class='bx bx-chevron-right'></i></button>
+                                                  </div>
+                                                  
+                                                </div>
+                                          </div>
+                                        </div>
+                                          
+                                      </div>
+                                      
+                                      <div class="d-flex flex-column mt-4">
+                                        
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {%endfor%}
+
+
+
                           {%else%}
                           <div class="row">
                               <div class="col-sm-8 bg-dark p-5" style="text-align: center;margin: auto;">
@@ -623,5 +753,73 @@
      </script> 
   
   
+
+
+  <script>
+    function add_stage_client(id,stg){
+      $.ajax({
+                type: "GET",
+                url: "{% url 'change_order_stage_client' %}",
+                data: {
+                    ele : id,
+                    stage:stg,
+                    
+                    
+                },
+                success:function(response){
+                    alert("Order Stage Update Successfully")
+                    location.reload()
+                }});
+    }
+  </script>
+  <script>
+  
+    function next_client(ids, id){
+        console.log(ids)
+        var trak = document.getElementById(`progress_client${ids}`);
+    
+        var cls = trak.className.split('-').pop();
+        console.log(cls)
+      cls > 6 ? cls = 0 : cls++;
+        trak.className = 'progress-' + cls;
+    
+        $.ajax({
+                type: "GET",
+                url: "{% url 'change_order_status_client' %}",
+                data: {
+                    ele : id,
+                    count:cls,
+                    
+                    
+                },
+                success:function(response){
+                    alert("Order Status Update Successfully")
+                }});
+    
+    
+    }
+    
+    function prev_client(ids,id){
+        var trak = document.getElementById(`progress_client${ids}`);
+        var cls = trak.className.split('-').pop();
+      cls < 1 ? cls = 7 : cls--;
+        trak.className = 'progress-' + cls;
+    
+        $.ajax({
+                type: "GET",
+                url: "{% url 'change_order_status_client' %}",
+                data: {
+                    ele : id,
+                    count:cls,
+                    
+                },
+                success:function(response){
+                     alert("Order Status Update Successfully")
+                }});
+    
+    }
+    
+    </script>
+
 
 {% endblock javascripts %}
