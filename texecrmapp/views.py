@@ -36,6 +36,8 @@ from texeclientapp.models import *
 from texeworkapp.views import *
 from texeworkapp.models import *
 
+from datetime import datetime, timedelta
+
 def login(request):
     if request.method == "POST":
         username  = request.POST.get('use')
@@ -51,7 +53,7 @@ def login(request):
             elif users.objects.filter(email=username, password=password,role="user").exists():
                 member = users.objects.get(email=username, password=password)
                 request.session['userid'] = member.id
-                return redirect('user_dashboard')
+                return redirect('order_user_view')
             elif user.is_superuser:
                 request.session['userid'] = request.user.id
                 return redirect('dashboard')
@@ -140,8 +142,8 @@ def dashboard(request):
     sub_cat=sub_category.objects.all()
     today = datetime.now()
     sub=orders.objects.filter(date__month=today.month).values_list('date__day', flat=True).distinct()
-    event=events.objects.filter(start=date.today())
-
+    event=events.objects.filter(start__date=date.today())
+    print(event)
     nm=[]
     cnt=[]
     for i in sub:
@@ -786,6 +788,58 @@ def today_orders(request):
         }
     return render(request, 'home/today_orders.html', context)
 
+
+def delivery_today(request):
+    resolved_func = resolve(request.path_info).func
+    segment="orders_dta"
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
+    orde=orders_crm.objects.filter(date__date=date.today())
+    
+    ord_item=checkout_item_crm.objects.all()
+    orde_client=orders.objects.filter(delivery_date=date.today())
+    ord_item_client=checkout_item.objects.all()
+    print(orde_client)
+    context={
+            'segment':segment,
+            'user':user,
+            "orders":orde,
+            "ord_item":ord_item,
+            'orde_client':orde_client,
+            'ord_item_client':ord_item_client,
+        }
+    return render(request, 'home\delivery_today.html', context)
+
+def delivery_tomorrow(request):
+    resolved_func = resolve(request.path_info).func
+    segment="orders_dta"
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
+
+    today = datetime.now()
+    tomorrow = today + timedelta(days=1)
+    orde=orders_crm.objects.filter(delivery_date=tomorrow.date())
+    
+    ord_item=checkout_item_crm.objects.all()
+    orde_client=orders.objects.filter(delivery_date=tomorrow.date())
+    ord_item_client=checkout_item.objects.all()
+ 
+    context={
+            'segment':segment,
+            'user':user,
+            "orders":orde,
+            "ord_item":ord_item,
+            'orde_client':orde_client,
+            'ord_item_client':ord_item_client,
+        }
+    return render(request, 'home\delivery_tomorrow.html', context)
+
 def up_expect(request):
     ele = request.GET.get('ele')
     count = request.GET.get('count')
@@ -1234,7 +1288,7 @@ def staff_index(request):
     sub_cat=sub_category.objects.all()
     today = datetime.now()
     sub=orders.objects.filter(date__month=today.month).values_list('date__day', flat=True).distinct()
-    event=events.objects.filter(start=date.today())
+    event=events.objects.filter(start__date=date.today())
 
     nm=[]
     cnt=[]
@@ -1261,6 +1315,35 @@ def logout(request):
     else:
         return redirect('/')
 
+
+def filter_date_event_staff(request):
+    if request.method=="POST":
+        dates=request.POST.get('date_filter',None)
+        segment="dashboard"
+        try:
+            usr=request.session['userid']
+            user=users.objects.get(id=usr)
+        except:
+            user=None
+        data = item.objects.all()
+        sub_cat=sub_category.objects.all()
+        today = datetime.now()
+        sub=orders.objects.filter(date__month=today.month).values_list('date__day', flat=True).distinct()
+        event=events.objects.filter(start=dates)
+
+        nm=[]
+        cnt=[]
+        for i in sub:
+            
+            nm.append(i)
+            qty=orders.objects.filter(date__day=i).count()
+            cnt.append(qty)
+
+        
+    
+        return render(request,'home/staff_index.html',{'segment':segment,"user":user,'sub_cat':sub_cat,'nm':nm,
+            'cnt':cnt,'data': data,'event':event})
+    return redirect('dashboard')
 
 ############################################################### USER MODULE
 def user_dashboard(request):

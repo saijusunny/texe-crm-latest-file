@@ -22,7 +22,7 @@
                         <div class="row">
                             <div class="col-sm-6 text-left">
                                 <h5 class="card-category"></h5>
-                                <h2 class="card-title">Performance</h2>
+                                <h2 class="card-title" id="cards_head">Item Overview</h2>
                             </div>
                             <div class="col-sm-6">
                                 <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
@@ -30,21 +30,21 @@
                                         <input type="radio" name="options" checked>
                                         <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Item</span>
                                         <span class="d-block d-sm-none">
-                        <i class="tim-icons icon-single-02"></i>
+                                          <i class="tim-icons icon-coins"></i>
                     </span>
                                     </label>
                                     <label class="btn btn-sm btn-primary btn-simple" id="1">
                                         <input type="radio" class="d-none d-sm-none" name="options">
                                         <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Category</span>
                                         <span class="d-block d-sm-none">
-                        <i class="tim-icons icon-gift-2"></i>
+                                          <i class="tim-icons icon-single-copy-04"></i>
                     </span>
                                     </label>
                                     <label class="btn btn-sm btn-primary btn-simple" id="2">
                                         <input type="radio" class="d-none" name="options">
                                         <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Orders</span>
                                         <span class="d-block d-sm-none">
-                        <i class="tim-icons icon-tap-02"></i>
+                                          <i class="tim-icons icon-bag-16"></i>
                     </span>
                                     </label>
                                 </div>
@@ -854,6 +854,7 @@ demo = {
       data.datasets[0].data = chart_data;
       data.labels = chart_labels;
       myChartData.update();
+      document.getElementById('cards_head').innerHTML="Item Overview"
     });
     $("#1").click(function() {
       var chart_labels = [{% for data in sub_cat %} '{{ data.subcategory }}', {% endfor %}];
@@ -862,6 +863,7 @@ demo = {
       data.datasets[0].data = chart_data;
       data.labels = chart_labels;
       myChartData.update();
+      document.getElementById('cards_head').innerHTML="Category Overview"
     });
 
     $("#2").click(function() {
@@ -871,6 +873,7 @@ demo = {
       data.datasets[0].data = chart_data;
       data.labels = chart_labels;
       myChartData.update();
+      document.getElementById('cards_head').innerHTML="Orders Overview"
     });
 
 

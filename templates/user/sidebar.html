@@ -8,12 +8,7 @@
                 <a href="{%url 'dashboard'%}"><img src="{% static 'images\logo.png'%}" class="w-50" alt="Texe Logo"></a>
             </div>
             <ul class="nav">
-                <li class='{% if segment == "user_dashboard"%} active {% endif %}'>
-                    <a href="{% url 'user_dashboard'%}">
-                        <i class="tim-icons icon-chart-pie-36"></i>
-                        <p style="font-size: 13px;">Dashboard</p>
-                    </a>
-                </li>
+                
 
                 <li class='{% if segment == "complaint_servicess"%} active {% endif %}'>
                     <a href="{% url 'complaint_servicess'%}">

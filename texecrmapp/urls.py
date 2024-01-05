@@ -37,7 +37,7 @@ urlpatterns = [
     path('cart_change_meterial',views.cart_change_meterial, name='cart_change_meterial'),
     path('cart_change_model',views.cart_change_model, name='cart_change_model'),
     path('save_cart/<int:id>',views.save_cart, name='save_cart'),
-    path('orders_list',views.orders_list, name='orders_list'),
+    path('orders_list/<int:id>',views.orders_list, name='orders_list'),
     path('filter_order',views.filter_order, name='filter_order'),
     path('filter_order_id',views.filter_order_id, name='filter_order_id'),
     path('change_order_status',views.change_order_status, name='change_order_status'),
@@ -61,6 +61,7 @@ urlpatterns = [
     path('icons',views.icons, name='icons'),
     path('profile',views.profile, name='profile'),
     path('edit_user_profile/<int:id>',views.edit_user_profile, name='edit_user_profile'),
+    path('filter_date_event_staff',views.filter_date_event_staff, name='filter_date_event_staff'),
     ########################################################################USER MODULE
     path('user_dashboard',views.user_dashboard, name='user_dashboard'),
     path('complaint_servicess',views.complaint_servicess, name='complaint_servicess'),
@@ -69,6 +70,9 @@ urlpatterns = [
     path('delete_comp_usr/<int:id>',views.delete_comp_usr, name='delete_comp_usr'),
     path('profile_user_prop',views.profile_user_prop, name='profile_user_prop'),
     path('edit_profile_user/<int:id>',views.edit_profile_user, name='edit_profile_user'),
+    path('delivery_tomorrow',views.delivery_tomorrow, name='delivery_tomorrow'),
+    path('delivery_today',views.delivery_today, name='delivery_today'),
+    
     ######################################################################################
     path('logout',views.logout, name='logout'),
 

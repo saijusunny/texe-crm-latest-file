@@ -10,7 +10,7 @@
                             <span class="navbar-toggler-bar bar3"></span>
                         </button>
                     </div>
-                    <a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
+                    <a class="navbar-brand" href="javascript:void(0)"></a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -68,13 +68,15 @@
                                 </p>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
-                                <li class="nav-link"><a href="{% url 'pending_orders'%}" class="nav-item dropdown-item">Pending Order</a></li>
                                 <li class="nav-link"><a href="{% url 'today_orders'%}" class="nav-item dropdown-item">Todays Order</a></li>
-                                <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item"></a></li>
-                                <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Another
-                                    notification</a></li>
-                                <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Another
-                                    one</a></li>
+
+                                <li class="nav-link"><a href="{% url 'delivery_today'%}" class="nav-item dropdown-item">Delivery Todays</a></li>
+
+                                <li class="nav-link"><a href="{% url 'delivery_tomorrow'%}" class="nav-item dropdown-item">Delivery Tomorrow</a></li>
+
+                                <li class="nav-link"><a href="{% url 'pending_orders'%}" class="nav-item dropdown-item">Pending Order</a></li>
+                                
+                                
                             </ul>
                         </li>
 

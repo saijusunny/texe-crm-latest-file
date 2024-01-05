@@ -12,8 +12,8 @@
 
 <!-- Carousel  -->
 <!-- Carousel  -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" type="text/css" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" type="text/css" rel="stylesheet" />
+
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
@@ -283,15 +283,15 @@ margin-top: 10px;
                     
                                                 {% for k in size%}
                                                 
-                                                <div class="btn btn-outline-dark pt-2 mt-2" style="width: 48px; height: 48px;" onclick="changesize('{{k.size}}')">{{k.size}}</div>
+                                                <div class="btn btn-outline-dark pt-2 mt-2" onclick="changesize('{{k.size}}')">{{k.size}}</div>
                                                 {%endfor%}
                                                 {% if items.size_chart == "static/round_neck.jpg" %}
-                                                <div class="btn btn-outline-dark mt-2 pt-2" style=" height: 48px;" onclick="openPopupstatic()">Size Chart</div>
+                                                <div class="btn btn-outline-dark "  onclick="openPopupstatic()">Size Chart</div>
                                                 {% elif items.size_chart%}
                                                 
-                                                <div class="btn btn-outline-dark mt-2 pt-2" style=" height: 48px;" onclick="openPopup('{{items.size_chart.url}}')">Size Chart</div>
+                                                <div class="btn btn-outline-dark mt-2 pt-2"  onclick="openPopup('{{items.size_chart.url}}')">Size Chart</div>
                                                 {%else%}
-                                                <div class="btn btn-outline-dark mt-2 pt-2" style=" height: 48px;" onclick='openPopupstatic()'>Size Chart</div>
+                                                <div class="btn btn-outline-dark mt-2 pt-2"  onclick='openPopupstatic()'>Size Chart</div>
                                                 {%endif%}
                                             </div>
                                             
