@@ -67,10 +67,19 @@
                 <li class='{% if segment == "staff_home"%} active {% endif %}'>
                     <a href="{% url 'staff_home'%}">
                         <i class="tim-icons icon-single-02"></i>
-                        <p style="font-size: 13px;">Staff Profile</p>
+                        <p style="font-size: 13px;">Staff Profiles</p>
                     </a>
                 </li>
                 {%endif%}
+
+                
+                <li class='{% if segment == "users_list"%} active {% endif %}'>
+                    <a href="{% url 'users_list'%}">
+                        <i class="tim-icons icon-atom"></i>
+                        <p style="font-size: 13px;">Users Profiles</p>
+                    </a>
+                </li>
+                
                 
 
                 

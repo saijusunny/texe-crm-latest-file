@@ -29,6 +29,7 @@ class users(models.Model):
     designation=models.CharField(max_length=250, null=True, blank=True)
     complaint=models.CharField(max_length=250, null=True, blank=True)
     orders=models.CharField(max_length=250, null=True, blank=True)
+   
     preformance=models.CharField(max_length=250, null=True, blank=True)
     def get_email_field_name(self):
         return 'email'

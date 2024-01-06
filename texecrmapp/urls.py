@@ -54,7 +54,8 @@ urlpatterns = [
     path('delete_comp/<int:id>',views.delete_comp, name='delete_comp'),
     path('up_expect',views.up_expect, name='up_expect'),
     path('up_expect_crm',views.up_expect_crm, name='up_expect_crm'),
-    
+    path('users_list',views.users_list, name='users_list'), 
+    path('edit_user_client/<int:id>',views.edit_user_client, name='edit_user_client'),
     #########################################################################Staff Module
     path('staff_index',views.staff_index, name='staff_index'),
     path('registrations',views.registrations, name='registrations'),

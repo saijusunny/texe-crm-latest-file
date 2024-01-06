@@ -230,6 +230,8 @@ def staff_home(request):
         user=None
     return render(request,'home/staff_home.html',{'segment':segment,'staffs':staffs,'user':user,})
 
+
+
 def add_staff(request):
     resolved_func = resolve(request.path_info).func
     segment=resolved_func.__name__
@@ -289,13 +291,14 @@ def add_staff(request):
 
 def edit_staff(request,id):
 
-    usr=users.objects.get(id=id)
+    us_data=users.objects.get(id=id)
+  
     try:
         usr=request.session['userid']
         user=users.objects.get(id=usr)
     except:
         user=None
-    return render(request,'home\edits_staff.html',{'usr':usr,'user':user,})
+    return render(request,'home\edits_staff.html',{'us_data':us_data,'user':user,})
  
 
 def save_edit_staff(request,id):
@@ -332,6 +335,28 @@ def delete_staff(request,id):
     usr=users.objects.get(id=id)
     usr.delete()
     return redirect('staff_home')
+
+def users_list(request):
+    resolved_func = resolve(request.path_info).func
+    segment=resolved_func.__name__
+    us=users.objects.filter(role="user")
+    user_client=registration.objects.filter(role="user1")
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
+    return render(request,'home/users_list.html',{'segment':segment,'staffs':us,'user':user,'user_client':user_client})
+
+def edit_user_client(request,id):
+
+    usr_client=registration.objects.get(id=id)
+    try:
+        usr=request.session['userid']
+        user=users.objects.get(id=usr)
+    except:
+        user=None
+    return render(request,'home\edit_user_client.html',{'usr':usr_client,'user':user,})
 
 def ser_cmp(request):
     comp=complaint_service.objects.filter(type="complaint")

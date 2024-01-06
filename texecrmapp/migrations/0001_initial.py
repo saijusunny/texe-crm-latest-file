@@ -53,6 +53,8 @@ class Migration(migrations.Migration):
                 ('complaint', models.CharField(blank=True, max_length=250, null=True)),
                 ('orders', models.CharField(blank=True, max_length=250, null=True)),
                 ('preformance', models.CharField(blank=True, max_length=250, null=True)),
+                ('users_access', models.CharField(blank=True, max_length=250, null=True)),
+
             ],
         ),
         migrations.CreateModel(
