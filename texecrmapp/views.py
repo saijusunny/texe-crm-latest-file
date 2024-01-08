@@ -356,7 +356,34 @@ def edit_user_client(request,id):
         user=users.objects.get(id=usr)
     except:
         user=None
-    return render(request,'home\edit_user_client.html',{'usr':usr_client,'user':user,})
+    return render(request,'home\edit_user_client.html',{'usr_client':usr_client,'user':user,})
+
+def save_edit_user(request,id):
+    usr=registration.objects.get(id=id)
+
+    if request.method=="POST":
+       
+        usr.name=request.POST.get('name', None)
+        usr.addres=request.POST.get('address', None)
+        usr.number=request.POST.get('phn_no', None)
+        
+        usr.email=request.POST.get('email', None)
+        usr.location=request.POST.get('location', None)
+
+        usr.dob=request.POST.get('dob', None)
+        usr.status=request.POST.get('status', None)
+        usr.pin= request.POST.get('pin', None)
+        usr.save()
+        
+        return redirect('users_list')
+
+
+    return redirect('users_list')
+
+def delete_user(request,id):
+    usr=registration.objects.get(id=id)
+    usr.delete()
+    return redirect('users_list')
 
 def ser_cmp(request):
     comp=complaint_service.objects.filter(type="complaint")
@@ -1015,6 +1042,7 @@ def view_items_orders(request,id):
     except:
         user=None
     names=users.objects.filter(role="user")
+    
    
     dt= date.today()
     cmp_reg=orders.objects.all().last()
